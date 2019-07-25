@@ -3,6 +3,7 @@ import { CustomEventId } from './constants'
 import { CustomEvents } from '../extension/injected-script/addEventListener'
 
 import { sleep as _sleep, timeout as _timeout } from '@holoflows/kit/es/util/sleep'
+import { isNull, isUndefined } from 'lodash-es'
 export const sleep = _sleep
 export const timeout = _timeout
 /**
@@ -40,4 +41,13 @@ export function untilDocumentReady() {
     return new Promise(resolve => {
         document.addEventListener('readystatechange', resolve, { once: true, passive: true })
     })
+}
+
+export const regexMatch = (str: string, regexp: RegExp, index?: number) => {
+    const r = str.match(regexp);
+    if (isNull(r)) throw new Error('Regexp match failed');
+    if (isUndefined(index)) {
+        return r;
+    }
+    return r[index];
 }

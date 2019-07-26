@@ -7,12 +7,14 @@ import { regexMatch } from '../../utils/utils'
  * userName   screenName
  */
 
-const name = /"user":{"screen_name":"(.*?)","name":"(.*?)"}}/
+const name = /"session":{.*?"user":{.*?"screen_name":"(.*?)","name":"(.*?)"}}/
+const bio = /"entities":{.*?"users":{.*?"entities":{.*?"[0-9]*":{.*?"description":"(.*?)"/
+const base = new LiveSelector().querySelector<HTMLAnchorElement>('script')
 
-export const screenNameSelector = new LiveSelector()
-    .querySelector<HTMLAnchorElement>('script')
-    .map(x => regexMatch(x.innerText, name, 0))
+const factory = (regex: RegExp, index?: number) => {
+    return base.clone().map(x => regexMatch(x.innerText, regex, index))
+}
 
-export const userNameSelector = new LiveSelector()
-    .querySelector('script')
-    .map(x => regexMatch(x.innerText, name, 1));
+export const screenNameSelector = factory(name, 0);
+export const userNameSelector = factory(name, 1);
+export const userBioSelector = factory(bio, 0);

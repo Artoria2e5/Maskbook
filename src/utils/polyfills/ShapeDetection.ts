@@ -1,6 +1,5 @@
 import jsQR from 'jsqr'
 import { isNull } from 'lodash-es'
-/// <reference path="./ShapeDetectionSpec.d.ts" />
 
 class BarcodeDetectorPolyfill implements BarcodeDetector {
     constructor() {}
@@ -24,11 +23,12 @@ class BarcodeDetectorPolyfill implements BarcodeDetector {
     }
 }
 class DetectedBarcodePolyfill implements DetectedBarcode {
+    // noinspection JSMethodCanBeStatic
     get boundingBox(): DOMRectReadOnly {
         throw new Error('Not implemented')
     }
     cornerPoints: { x: number; y: number }[] = []
-    format = 'qr_code'
+    format:'qr_code' = 'qr_code'
     rawValue!: string
 }
 

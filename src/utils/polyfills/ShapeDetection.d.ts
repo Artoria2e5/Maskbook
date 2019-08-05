@@ -1,11 +1,14 @@
 declare class BarcodeDetector {
-    constructor(options: { formats: string[] })
+    // *not implemented* constructor(options: { formats: string[] })
+    constructor(options: { formats: ['qr_code'] })
     public async detect(mediaSource: CanvasImageSource): Promise<DetectedBarcode[]>
 }
+
 declare class DetectedBarcode {
     boundingBox: DOMRectReadOnly
     cornerPoints: { x: number; y: number }[]
-    format: string
+    // *not implemented* format: string
+    format: 'qr_code'
     rawValue: string
 }
 

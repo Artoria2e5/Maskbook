@@ -14,7 +14,6 @@ import { Identifier, PersonIdentifier } from '../../../database/type'
 import { MessageCenter } from '../../../utils/messages'
 import { ValueRef } from '@holoflows/kit/es'
 import { useValueRef } from '../../../utils/hooks/useValueRef'
-import { makeStyles } from '@material-ui/core'
 import { getProfilePageUrlAtFacebook } from '../../../social-network-provider/facebook.com/parse-username'
 
 //#region Welcome
@@ -40,7 +39,7 @@ const WelcomeActions = {
         } else {
             const fr = new FileReader()
             fr.readAsText(file)
-            fr.addEventListener('loadend', async f => {
+            fr.addEventListener('loadend', async () => {
                 const json = JSON.parse(fr.result as string)
                 Services.People.restoreBackup(json, id)
             })
@@ -67,7 +66,7 @@ const WelcomeActions = {
     manualVerifyBio(user: PersonIdentifier, prove: string) {
         this.autoVerifyBio(user, prove)
     },
-    onFinish(reason: 'quit' | 'done') {
+    onFinish() {
         window.close()
     },
 }

@@ -1,5 +1,5 @@
 import { LiveSelector, MutationObserverWatcher } from '@holoflows/kit/es'
-import { getPersonIdentifierAtFacebook } from '../../../social-network-provider/facebook.com/getPersonIdentifierAtFacebook'
+import { getPersonIdentifierAtFacebook } from '../getPersonIdentifierAtFacebook'
 import Services from '../../../extension/service'
 
 // TODO: also collect nickname and avatar!
@@ -42,7 +42,7 @@ function detectIfFriend() {
     })
     // TODO: finish this, store it into the database
     new MutationObserverWatcher(isFriend)
-        .useForeach((status: Status) => {
+        .useForeach(() => {
             return {
                 onTargetChanged() {},
                 onRemove() {},

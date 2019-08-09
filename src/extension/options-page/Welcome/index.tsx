@@ -93,7 +93,12 @@ function Welcome(props: Welcome) {
                 />
             )
         case WelcomeState.Intro:
-            return <Welcome1a2 next={() => onStepChange(WelcomeState.BackupKey)} />
+            return (
+                <Welcome1a2
+                    back={() => onStepChange(WelcomeState.Start)}
+                    next={() => onStepChange(WelcomeState.BackupKey)}
+                />
+            )
         case WelcomeState.BackupKey:
             sideEffects.backupMyKeyPair(props.identity)
             return <Welcome1a3 next={() => onStepChange(WelcomeState.ProvePost)} />
@@ -149,11 +154,6 @@ export default withRouter(function _WelcomePortal(props: RouteComponentProps<{ i
     const identifier = useValueRef(IdentifierRef)
 
     const onFinish = WelcomeActions.onFinish.bind({ props })
-    const closeDialog = (e: React.MouseEvent) => {
-        if ([...e.currentTarget.children].includes(e.nativeEvent.srcElement! as Element)) {
-            onFinish('quit')
-        }
-    }
 
     useEffect(() => {
         const raw = new URLSearchParams(props.location.search).get('identifier') || ''
@@ -165,7 +165,7 @@ export default withRouter(function _WelcomePortal(props: RouteComponentProps<{ i
     }, [props.location.search])
 
     return (
-        <ResponsiveDialog open onClick={closeDialog}>
+        <ResponsiveDialog open>
             <IdentifierRefContext.Provider value={IdentifierRef}>
                 <Welcome
                     provePost={provePost}

@@ -68,7 +68,7 @@ const WelcomeActions = {
         this.autoVerifyBio(user, prove)
     },
     onFinish(reason: 'quit' | 'done') {
-        window.close()
+        ;((this as unknown) as { props: RouteComponentProps }).props.history.replace('/')
     },
 }
 interface Welcome {
@@ -124,7 +124,7 @@ function Welcome(props: Welcome) {
                 />
             )
         case WelcomeState.End:
-            return <Welcome2 />
+            return <Welcome2 close={() => onFinish('done')} />
     }
 }
 const ResponsiveDialog = withMobileDialog()(Dialog)
@@ -148,6 +148,13 @@ export default withRouter(function _WelcomePortal(props: RouteComponentProps<{ i
     const provePost = useValueRef(ProvePostRef)
     const identifier = useValueRef(IdentifierRef)
 
+    const onFinish = WelcomeActions.onFinish.bind({ props })
+    const closeDialog = (e: React.MouseEvent) => {
+        if ([...e.currentTarget.children].includes(e.nativeEvent.srcElement! as Element)) {
+            onFinish('quit')
+        }
+    }
+
     useEffect(() => {
         const raw = new URLSearchParams(props.location.search).get('identifier') || ''
         const id = Identifier.fromString(raw)
@@ -158,14 +165,14 @@ export default withRouter(function _WelcomePortal(props: RouteComponentProps<{ i
     }, [props.location.search])
 
     return (
-        <ResponsiveDialog open>
+        <ResponsiveDialog open onClick={closeDialog}>
             <IdentifierRefContext.Provider value={IdentifierRef}>
                 <Welcome
                     provePost={provePost}
                     currentStep={step}
                     sideEffects={WelcomeActions}
                     onStepChange={setStep}
-                    onFinish={WelcomeActions.onFinish}
+                    onFinish={onFinish}
                     identity={identifier}
                 />
             </IdentifierRefContext.Provider>
